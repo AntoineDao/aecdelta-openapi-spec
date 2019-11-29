@@ -174,11 +174,8 @@ BranchPayload:
   description: A payload to configure a branch operation from a stream
   type: object
   required:
-  - stream_id
+  - options
   properties:
-    stream_id:
-      title: The ID of the stream to branch
-      type: string
     options:
      $ref: '#/NewStream'
 
@@ -188,11 +185,7 @@ MergePayload:
   type: object
   required:
   - from
-  - to
   properties:
     from:
       title: Stream to merge from
-      type: string
-    to:
-      title: Stream to merge to
       type: string

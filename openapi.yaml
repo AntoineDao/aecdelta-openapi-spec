@@ -6,6 +6,7 @@ info:
 paths:
   '/projects':
     get:
+      description: Query projects and retrieve a list. Will only return projects user has `read` acces to.
       parameters:
       - in: query
         name: stream
@@ -44,6 +45,7 @@ paths:
         404:
           $ref: './responses/404.yaml'
     post:
+      description: Create a new project.
       tags:
       - Project
       requestBody:
@@ -69,6 +71,7 @@ paths:
         schema:
           type: string
     get:
+      description: Get a project by ID. Required `read` access to that project.
       tags:
       - Project
       responses:
@@ -81,6 +84,7 @@ paths:
         404:
           $ref: './responses/404.yaml'
     put:
+      description: Update a project's properties. Requires `write` access to that project.
       tags:
       - Project
       requestBody:
@@ -101,6 +105,7 @@ paths:
           $ref: './responses/404.yaml'
 
     delete:
+      description: Delete a project. Requires `admin` access to that project.
       tags:
       - Project
       responses:
@@ -115,6 +120,7 @@ paths:
 
   '/streams':
     get:
+      description: Query streams and retrieve a list. Will only return streams the user has `read` access to.
       parameters:
       - in: query
         name: name
@@ -150,6 +156,7 @@ paths:
           $ref: './responses/404.yaml'
 
     post:
+      description: Create a new stream. User must have `contributor` access to the project the stream belongs to.
       tags:
       - Stream
       requestBody:
@@ -175,6 +182,7 @@ paths:
         schema:
           type: string
     get:
+      description: Get a stream by ID. User must have `read` access to stream.
       tags:
       - Stream
       responses:
@@ -187,6 +195,7 @@ paths:
         404:
           $ref: './responses/404.yaml'
     put:
+      description: Update a stream. User must have `write` access to the stream.
       tags:
       - Stream
       requestBody:
@@ -207,6 +216,7 @@ paths:
           $ref: './responses/404.yaml'
         
     delete:
+      description: Delete a stream. The user must have `admin` access to the stream.
       tags:
       - Stream
       responses:
@@ -219,32 +229,61 @@ paths:
         404:
           $ref: './responses/404.yaml'
 
-  '/streams/branch':
+  '/streams/{id}/branch':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     post:
+      description: Branch/clone a stream. User must have `read` access to the stream.
       tags:
       - Stream
+      requestBody:
+        description: Stream branch payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BranchPayload'
       responses:
-        200:
-          description: OK
+        201:
+          description: Created
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/BranchPayload'
+                $ref: '#/components/schemas/Stream'
 
-  '/streams/merge':
+  '/streams/{id}/merge':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     post:
+      description: Merge two streams. User must have `write` access to the stream identified in the url path and `read` access to the stream identified in the request body.
       tags:
       - Stream
+      requestBody:
+        description: Stream merge payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergePayload'
       responses:
-        200:
-          description: OK
+        202:
+          description: Accepted
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/MergePayload'
+                $ref: '#/components/schemas/Stream'
 
   '/revisions':
     get:
+      description: Query revisions and get a list. The user will only see revisions they have `read` access to.
       parameters:
       - in: query
         name: stream
@@ -265,6 +304,7 @@ paths:
           $ref: './responses/404.yaml'
 
     post:
+      description: Create a new revision. User must have `contributor` permission to the stream the permission belongs to.
       tags:
       - Revision
       requestBody:
@@ -293,6 +333,7 @@ paths:
         schema:
           type: string
     get:
+      description: Get a single revision by ID. User must have `read` permission on the parent stream.
       tags:
       - Revision
       responses:
@@ -306,6 +347,7 @@ paths:
           $ref: './responses/404.yaml'
 
     delete:
+      description: Delete a single revision by ID. User must have `admin` permission on the parent stream.
       tags:
       - Revision
       responses:
@@ -318,10 +360,10 @@ paths:
         404:
           $ref: './responses/404.yaml'
 
-  '/revisions/diff':
+  '/revisions/{id}/diff':
     parameters:
-    - in: query
-      name: from
+    - in: path
+      name: id
       required: true
       schema:
         type: string
@@ -334,6 +376,7 @@ paths:
       description: The ID of the revision to compare to
 
     get:
+      description: Get a diff from two revisions. User must have `read` the streams both revisions belong to.
       tags:
       - Revision
       responses:
@@ -346,6 +389,7 @@ paths:
 
   '/users':
     get:
+      description: Query users and get a list. There are no secret users here so no permissons are required!
       parameters:
       - in: query
         name: stream
@@ -399,6 +443,7 @@ paths:
 
   '/users/{id}':
     get:
+      description: Get a single user by ID. There are no secret users here so no permissons are required!
       parameters:
       - name: id
         in: path
@@ -419,6 +464,7 @@ paths:
 
   '/teams':
     get:
+      description: Query teams and get a list. User will only see lists they have `read` permissions to.
       parameters:
       - in: query
         name: stream
@@ -464,6 +510,7 @@ paths:
           $ref: './responses/404.yaml'
 
     post:
+      description: Create a new team.
       tags:
       - Team
       requestBody:
@@ -484,13 +531,14 @@ paths:
           $ref: './responses/400.yaml'
 
   '/teams/{id}':
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
     get:
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      description: Get a single team by ID. User must have `read` access to the team.
       tags:
       - Team
       responses:
@@ -504,6 +552,7 @@ paths:
           $ref: './responses/404.yaml'
 
     put:
+      description: Update a team's information. User must have `write` access to the team.
       tags:
       - Team
       requestBody:
@@ -524,6 +573,7 @@ paths:
           $ref: './responses/404.yaml'
 
     delete:
+      description: Delete a team. User must have admin access to the team.
       tags:
       - Team
       responses:
@@ -571,3 +621,10 @@ components:
       $ref: './schemas/team.yaml#/NewTeam'
     Permission:
      $ref: './schemas/permission.yaml#/Permission'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []   

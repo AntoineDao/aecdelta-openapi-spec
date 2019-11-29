@@ -89,29 +89,3 @@ Diff:
           type: string
     delta:
       $ref: './delta.yaml#/Delta'    
-
-
-
-# {
-#     revision_datetime: <DateTime>
-#     author: {username}
-#     other ?
-#     delta:  {
-#       "created": [ 
-#                      [ uid_1, sid_1, mesh_1, material/colour_1, metadata_1, authoring_tool_1, ... ], 
-#                      [ uid_2, sid_2, mesh_2, material/colour_2, metadata_2, authoring_tool_2, ... ], 
-#                      ... 
-#                   ],
-#        "deleted": [ uid_4, uid_5, uid_6, ... ],
-#        "updated": [ 
-#                      [ uid_7, sid_7, mesh_7, material/colour_7, metadata_7, authoring_tool_7, ... ], 
-#                      [ uid_8, sid_8, mesh_8, material/colour_8, metadata_8, authoring_tool_8, ... ], 
-#                      ... 
-#                    ]
-#        "revision_A": from_id,
-#        "revision_B": to_id,
-#        "timestamp": <time_t>,
-#        "signature": <base64 AES string>,
-#        "sender": <string> // E.g. BHoM, 3D Repo, Speckle, etc.
-#     }
-# }
