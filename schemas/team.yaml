@@ -1,0 +1,75 @@
+Team:
+  title: A Team or Organisation
+  description: A team contains a list of roles that are attributed to users
+  type: object
+  required:
+  - id
+  - name
+  - roles
+  properties:
+    id:
+      title: ID
+      type: string
+    name:
+      title: Name
+      type: string
+    description:
+      title: Description of the team
+      type: string
+    roles:
+      title: Roles
+      description: A list of roles. Should always contain the default and owner roles
+      type: array
+      items:
+        title: Role
+        description: An individual role for a team. Note that a role with null permissions cannot access the resource.
+        type: object
+        required:
+        - name
+        - permissions
+        properties:
+          name:
+            title: Name
+            description: The name of the role
+            type: string
+          description:
+            title: Description
+            description: A description of the role
+          permission:
+            $ref: './permission.yaml#/Permission'
+          
+NewTeam:
+  title: A Team or Organisation
+  description: A team contains a list of roles that are attributed to users
+  type: object
+  required:
+  - name
+  - roles
+  properties:
+    name:
+      title: Name
+      type: string
+    description:
+      title: Description of the team
+      type: string
+    roles:
+      title: Roles
+      description: A list of roles. Should always contain the default and owner roles
+      type: array
+      items:
+        title: Role
+        description: An individual role for a team. Note that a role with null permissions cannot access the resource.
+        type: object
+        required:
+        - name
+        - permissions
+        properties:
+          name:
+            title: Name
+            description: The name of the role
+            type: string
+          description:
+            title: Description
+            description: A description of the role
+          permission:
+            $ref: './permission.yaml#/Permission'

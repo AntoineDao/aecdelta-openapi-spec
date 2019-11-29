@@ -1,0 +1,20 @@
+PermissionQuery:
+  in: query
+  name: permission
+  required: false
+  description: Level of permission granted to a resource. Leaving this blank results in no permissions on a resource for a given role.
+  schema:
+    type: string
+    enum:
+    - read
+    - write
+    - admin
+Permission:
+  # tile: permission
+  # description: Level of permission granted to a resource. Leaving this blank results in no permissions on a resource for a given role.
+  # schema:
+  type: string
+  enum:
+  - read
+  - write
+  - admin

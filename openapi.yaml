@@ -1,0 +1,573 @@
+openapi: 3.0.2
+info:
+  title: aecdeltas
+  description: The AEC Deltas OpenAPI Spec
+  version: 0.0.1
+paths:
+  '/projects':
+    get:
+      parameters:
+      - in: query
+        name: stream
+        required: false
+        schema:
+          type: string
+        description: The ID of the stream a project has permissions on
+      - in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        description: The name of a project to search for
+      - in: query
+        name: permission
+        required: false
+        description: Level of permission granted to a resource. Leaving this blank results in no permissions on a resource for a given role.
+        schema:
+          type: string
+          enum:
+          - read
+          - write
+          - admin
+      tags:
+      - Project
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                title: Projects
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        404:
+          $ref: './responses/404.yaml'
+    post:
+      tags:
+      - Project
+      requestBody:
+        description: New Project payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProject'
+      responses:
+        201:
+          $ref: './responses/201.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+
+  '/projects/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Project
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Project'
+        404:
+          $ref: './responses/404.yaml'
+    put:
+      tags:
+      - Project
+      requestBody:
+        description: Project update payload
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/NewProject'
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+    delete:
+      tags:
+      - Project
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+  '/streams':
+    get:
+      parameters:
+      - in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        description: The name of the stream to search for
+      - in: query
+        name: project
+        required: false
+        schema:
+          type: string
+        description: The ID of the project a stream belongs to
+      - in: query
+        name: schema
+        required: false
+        schema:
+          type: string
+        description: The name of the schema a stream accepts
+      tags:
+      - Stream
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                title: Streams
+                type: array
+                items:
+                  $ref: '#/components/schemas/Streams'
+        404:
+          $ref: './responses/404.yaml'
+
+    post:
+      tags:
+      - Stream
+      requestBody:
+        description: New Stream payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewStream'
+      responses:
+        201:
+          $ref: './responses/201.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+
+  '/streams/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Stream
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Stream'
+        404:
+          $ref: './responses/404.yaml'
+    put:
+      tags:
+      - Stream
+      requestBody:
+        description: Stream update payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewStream'
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+        
+    delete:
+      tags:
+      - Stream
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+  '/streams/branch':
+    post:
+      tags:
+      - Stream
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/BranchPayload'
+
+  '/streams/merge':
+    post:
+      tags:
+      - Stream
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MergePayload'
+
+  '/revisions':
+    get:
+      parameters:
+      - in: query
+        name: stream
+        required: true
+        schema:
+          type: string
+        description: The ID of the stream to retrieve revisions from
+      tags:
+      - Revision
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Revisions'
+        404:
+          $ref: './responses/404.yaml'
+
+    post:
+      tags:
+      - Revision
+      requestBody:
+        description: New Revision payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewRevision'
+      responses:
+        201:
+          $ref: './responses/201.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        400:
+          $ref: './responses/400.yaml'
+
+
+  '/revisions/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Revision
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Revision'
+        404:
+          $ref: './responses/404.yaml'
+
+    delete:
+      tags:
+      - Revision
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+  '/revisions/diff':
+    parameters:
+    - in: query
+      name: from
+      required: true
+      schema:
+        type: string
+      description: The ID of the revision to compare from   
+    - in: query
+      name: to
+      required: true
+      schema:
+        type: string
+      description: The ID of the revision to compare to
+
+    get:
+      tags:
+      - Revision
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: './schemas/revisions.yaml#/Diff'
+
+  '/users':
+    get:
+      parameters:
+      - in: query
+        name: stream
+        required: false
+        schema:
+          type: string
+        description: The ID of the stream a user has permissions on
+      - in: query
+        name: stream_role
+        required: false
+        schema:
+          type: string
+        description: The role the user has for this stream
+      - in: query
+        name: project
+        required: false
+        schema:
+          type: string
+        description: The ID of the project a user has permissions on
+      - in: query
+        name: project_role
+        required: false
+        schema:
+          type: string
+        description: The role the user has for this project
+      - in: query
+        name: permission
+        required: false
+        description: Level of permission granted to a resource
+        schema:
+          type: string
+          enum:
+          - read
+          - write
+          - admin
+
+      tags:
+      - User
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                title: Users
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        404:
+          $ref: './responses/404.yaml'
+
+  '/users/{id}':
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - User
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          $ref: './responses/404.yaml'
+
+  '/teams':
+    get:
+      parameters:
+      - in: query
+        name: stream
+        required: false
+        schema:
+          type: string
+        description: The ID of the stream a team has permissions on
+      - in: query
+        name: project
+        required: false
+        schema:
+          type: string
+        description: The ID of the project a team has permissions on
+      - in: query
+        name: role
+        required: false
+        schema:
+          type: string
+        description: The specific team role to query
+      - in: query
+        name: permission
+        required: false
+        description: Level of permission granted to a resource. Leaving this blank results in no permissions on a resource for a given role.
+        schema:
+          type: string
+          enum:
+          - read
+          - write
+          - admin
+      tags:
+      - Team
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                title: Users
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+        404:
+          $ref: './responses/404.yaml'
+
+    post:
+      tags:
+      - Team
+      requestBody:
+        description: New Team payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTeam'
+      responses:
+        201:
+          $ref: './responses/201.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        400:
+          $ref: './responses/400.yaml'
+
+  '/teams/{id}':
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Team
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Team'
+        404:
+          $ref: './responses/404.yaml'
+
+    put:
+      tags:
+      - Team
+      requestBody:
+        description: New Team payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTeam'
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+    delete:
+      tags:
+      - Team
+      responses:
+        202:
+          $ref: './responses/202.yaml'
+        409:
+          $ref: './responses/409.yaml'
+        401:
+          $ref: './responses/401.yaml'
+        404:
+          $ref: './responses/404.yaml'
+
+
+components:
+  schemas:
+    Created:
+      $ref: './schemas/created.yaml'
+    NewProject:
+      $ref: './schemas/project.yaml#/NewProject'
+    Project:
+      $ref: './schemas/project.yaml#/Project'
+    NewStream:
+      $ref: './schemas/stream.yaml#/NewStream'
+    Stream:
+      $ref: './schemas/stream.yaml#/Stream'
+    Streams:
+      $ref: './schemas/stream.yaml#/Streams'
+    BranchPayload:
+      $ref: './schemas/stream.yaml#/BranchPayload'
+    MergePayload:
+      $ref: './schemas/stream.yaml#/MergePayload'
+    Revisions:
+      $ref: './schemas/revisions.yaml#/Revisions'
+    Revision:
+      $ref: './schemas/revisions.yaml#/Revision'
+    NewRevision:
+      $ref: './schemas/revisions.yaml#/NewRevision'
+    Delta:
+      $ref: './schemas/delta.yaml#/Delta'
+    User:
+      $ref: './schemas/user.yaml#/User'
+    Team:
+      $ref: './schemas/team.yaml#/Team'
+    NewTeam:
+      $ref: './schemas/team.yaml#/NewTeam'
+    Permission:
+     $ref: './schemas/permission.yaml#/Permission'

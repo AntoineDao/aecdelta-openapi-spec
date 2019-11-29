@@ -1,0 +1,56 @@
+Delta:
+  title: Delta
+  type: object
+  description: An AEC Delta Object
+  required:
+  - hash
+  - created
+  - deleted
+  - updated
+  - from
+  - to
+  - timestamp
+  - signature
+  - sender
+  properties:
+    hash:
+      title: Hash
+      type: string
+    created:
+      title: created
+      description: created
+      type: array
+      items:
+        type: object
+    deleted:
+      title: deleted
+      description: deleted
+      type: array
+      items:
+        type: string
+    updated:
+      title: updated
+      description: updated
+      type: array
+      items:
+        type: object
+    from:
+      title: from
+      description: from
+      type: string
+    to:
+      title: to
+      description: to
+      type: string
+    timestamp:
+      title: timestamp
+      description: timestamp
+      type: string
+    signature:
+      title: signature
+      description: signature
+      type: string
+    sender:
+      title: sender
+      description: sender
+      type: string

@@ -1,0 +1,61 @@
+User:
+  title: "User"
+  type: object
+  description: A User
+  required:
+  - id
+  - streams
+  - projects
+  - team_roles
+  - public_key
+  properties:
+    id:
+      title: User ID
+      type: string
+    team_roles:
+      title: Team Role
+      type: object
+      required:
+      - team
+      - role
+      properties:
+        team:
+          title: Team Name
+          type: string
+        role:
+          title: Team Role
+          type: string
+    public_key:
+      title: Public Key
+      description: The user's public PGP signing Key
+      type: string
+
+UserUpdate:
+  title: "User update"
+  type: object
+  description: Payload to update user information
+  properties:
+    id:
+      title: User ID
+      type: string
+    streams:
+      title: streams
+      type: array
+      items:
+        $ref: '#/Permission'
+    projects:
+      title: projects
+      type: array
+      items:
+        $ref: '#/Permission'
+
+NewUser:
+  title: "New User"
+  type: object
+  description: A User
+  required:
+  - project_name
+  properties:
+    project_name:
+      title: User Name
+      type: string

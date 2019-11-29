@@ -1,0 +1,198 @@
+Stream:
+  title: "Stream"
+  type: object
+  description: A Stream
+  required:
+  - id
+  - name
+  - payload
+  - project_id
+  - roles
+  - schemas
+  properties:
+    id:
+      title: Stream Id
+      type: string
+    name:
+      title: Stream Name
+      type: string
+    description:
+      title: Stream description
+      type: string
+    project_id:
+      title: Project this stream is associated with
+      type: string
+    payload:
+      title: streams
+      type: array
+      items:
+        type: object
+    roles:
+      title: Stream Roles
+      type: array
+      items:
+        title: Stream Role
+        description: An individual role for a stream. Note that a role with null permissions cannot access the resource.
+        type: object
+        required:
+        - name
+        - permission
+        - project_roles
+        properties:
+          name:
+            title: Stream Role Name
+            type: string
+          permission:
+            $ref: './permission.yaml#/Permission'
+          project_roles:
+            title: Project Role
+            type: object
+            required:
+            - role
+            properties:
+              role:
+                title: Project Role
+                type: string
+    senders:
+      title: Senders
+      description: The names of the schemas or compute libraries that can write to this stream. For example `[ "bhom", "speckle", "3drepo" ]`
+      type: array
+      items:
+       type: string
+
+Streams:
+  title: streams
+  description: A list of Streams
+  type: array
+  items:
+    title: "Stream"
+    type: object
+    description: A Stream
+    required:
+    - id
+    - name
+    - project_id
+    - roles
+    properties:
+      id:
+        title: Stream Id
+        type: string
+      name:
+        title: Stream Name
+        type: string
+      description:
+        title: Stream description
+        type: string
+      project_id:
+        title: Project this stream is associated with
+        type: string
+      roles:
+        title: Stream Roles
+        type: array
+        items:
+          title: Stream Role
+          description: An individual role for a stream. Note that a role with null permissions cannot access the resource.
+          type: object
+          required:
+          - name
+          - permission
+          - project_roles
+          properties:
+            name:
+              title: Stream Role Name
+              type: string
+            permission:
+              $ref: './permission.yaml#/Permission'
+            project_roles:
+              title: Project Role
+              type: object
+              required:
+              - role
+              properties:
+                role:
+                  title: Project Role
+                  type: string
+      senders:
+        title: Senders
+        description: The names of the schemas or compute libraries that can write to this stream. For example `[ "bhom", "speckle", "3drepo" ]`
+        type: array
+        items:
+          type: string
+
+NewStream:
+  title: "New Stream"
+  type: object
+  description: A Stream
+  required:
+  - name
+  - project_id
+  properties:
+    name:
+      title: Stream Name
+      type: string
+    description:
+      title: Stream description
+      type: string
+    project_id:
+      title: Project this stream is associated with
+      type: string
+    roles:
+      title: Stream Roles
+      type: array
+      items:
+        title: Stream Role
+        description: An individual role for a stream. Note that a role with null permissions cannot access the resource.
+        type: object
+        required:
+        - name
+        - permission
+        - project_roles
+        properties:
+          name:
+            title: Stream Role Name
+            type: string
+          permission:
+            $ref: './permission.yaml#/Permission'
+          project_roles:
+            title: Project Role
+            type: object
+            required:
+            - role
+            properties:
+              role:
+                title: Project Role
+                type: string
+    senders:
+      title: Senders
+      description: The names of the schemas or compute libraries that can write to this stream. For example `[ "bhom", "speckle", "3drepo" ]`
+      type: array
+      items:
+       type: string
+
+BranchPayload:
+  title: Branch Operation Payload
+  description: A payload to configure a branch operation from a stream
+  type: object
+  required:
+  - stream_id
+  properties:
+    stream_id:
+      title: The ID of the stream to branch
+      type: string
+    options:
+     $ref: '#/NewStream'
+
+MergePayload:
+  title: Merge Operation Payload
+  description: A payload to configure a merge operation between two streams
+  type: object
+  required:
+  - from
+  - to
+  properties:
+    from:
+      title: Stream to merge from
+      type: string
+    to:
+      title: Stream to merge to
+      type: string

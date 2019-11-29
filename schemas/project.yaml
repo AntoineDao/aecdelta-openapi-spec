@@ -1,0 +1,99 @@
+Project:
+  title: "Project"
+  type: object
+  description: A Project
+  required:
+  - id
+  - name
+  - descriptions
+  - streams
+  - roles
+  properties:
+    id:
+      title: Project ID
+      type: string
+    name:
+      title: Project Name
+      type: string
+    description:
+      title: Project Description
+      type: string
+    streams:
+      title: streams
+      type: array
+      items:
+        type: string
+    roles:
+      title: Project Roles
+      type: array
+      items:
+        title: Project Role
+        type: object
+        description: An individual role for a project. Note that a role with null permissions cannot access the resource.
+        required:
+        - name
+        - permission
+        - team_roles
+        properties:
+          name:
+            title: Project Role Name
+            type: string
+          permission:
+            $ref: './permission.yaml#/Permission'
+          team_roles:
+            title: Team Role
+            type: object
+            required:
+            - team
+            - role
+            properties:
+              team:
+                title: Team Name
+                type: string
+              role:
+                title: Team Role
+                type: string
+
+NewProject:
+  title: "New Project"
+  type: object
+  description: A Project
+  required:
+  - name
+  properties:
+    name:
+      title: Project Name
+      type: string
+    description:
+      title: Project Description
+      type: string
+    roles:
+      title: Project Roles
+      type: array
+      items:
+        title: Project Role
+        type: object
+        description: An individual role for a project. Note that a role with null permissions cannot access the resource.
+        required:
+        - name
+        - permission
+        - team_roles
+        properties:
+          name:
+            title: Project Role Name
+            type: string
+          permission:
+            $ref: './permission.yaml#/Permission'
+          team_roles:
+            title: Team Role
+            type: object
+            required:
+            - team
+            - role
+            properties:
+              team:
+                title: Team Name
+                type: string
+              role:
+                title: Team Role
+                type: string

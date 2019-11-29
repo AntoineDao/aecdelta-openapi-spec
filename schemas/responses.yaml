@@ -1,0 +1,25 @@
+Created:
+  201:
+    $ref: '../responses/201.yaml'
+  409:
+    $ref: '../responses/409.yaml'
+  401:
+    $ref: '../responses/401.yaml'
+Updated:
+  202:
+    $ref: '../responses/202.yaml'
+  409:
+    $ref: '../responses/409.yaml'
+  401:
+    $ref: '../responses/401.yaml'
+  404:
+    $ref: '../responses/404.yaml'
+Deleted:
+  202:
+    $ref: '../responses/202.yaml'
+  409:
+    $ref: '../responses/409.yaml'
+  401:
+    $ref: '../responses/401.yaml'
+  404:
+    $ref: '../responses/404.yaml'

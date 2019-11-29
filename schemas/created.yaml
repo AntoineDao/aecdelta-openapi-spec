@@ -1,0 +1,9 @@
+title: "New Resource"
+type: object
+description: The resource id
+required:
+- id
+properties:
+  id:
+    title: id
+    type: string

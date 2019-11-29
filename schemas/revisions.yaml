@@ -1,0 +1,117 @@
+Revisions:
+  title: "Revision List"
+  type: object
+  description: A list of revisions for a stream
+  required:
+  - stream_id
+  - project_id
+  - revisions
+  properties:
+    stream_id:
+      title: Stream Id
+      type: string
+    description:
+      title: Stream description
+      type: string
+    project_id:
+      title: Project this revision is associated with
+      type: string
+    revisions:
+      title: revision ids
+      type: array
+      items:
+        type: string
+
+Revision:
+  title: "Revision"
+  type: object
+  description: A single revision for a stream
+  required:
+  - stream_id
+  - project_id
+  - datetime
+  - author
+  - payload
+  properties:
+    stream_id:
+      title: Stream Id
+      type: string
+    project_id:
+      title: Project this revision is associated with
+      type: string
+    datetime:
+      title: Timestamp
+      type: string
+      description: UTC format
+    author:
+      title: author
+      type: object
+      required:
+      - username
+      properties:
+        username:
+          type: string
+    payload:
+      title: payload
+      type: object
+
+NewRevision:
+  title: "New Revision"
+  type: object
+  description: A Revision
+  required:
+  - stream_id
+  properties:
+    stream_id:
+      title: Stream Id
+      type: string
+    delta:
+      $ref: './delta.yaml#/Delta'        
+
+Diff:
+  title: "Diff"
+  type: object
+  description: A diff between two revisions
+  required:
+  - revision_datetime
+  - author
+  - delta
+  properties:
+    revision_datetime:
+      type: string
+    author:
+      title: author
+      type: object
+      required:
+      - username
+      properties:
+        username:
+          type: string
+    delta:
+      $ref: './delta.yaml#/Delta'    
+
+
+
+# {
+#     revision_datetime: <DateTime>
+#     author: {username}
+#     other ?
+#     delta:  {
+#       "created": [ 
+#                      [ uid_1, sid_1, mesh_1, material/colour_1, metadata_1, authoring_tool_1, ... ], 
+#                      [ uid_2, sid_2, mesh_2, material/colour_2, metadata_2, authoring_tool_2, ... ], 
+#                      ... 
+#                   ],
+#        "deleted": [ uid_4, uid_5, uid_6, ... ],
+#        "updated": [ 
+#                      [ uid_7, sid_7, mesh_7, material/colour_7, metadata_7, authoring_tool_7, ... ], 
+#                      [ uid_8, sid_8, mesh_8, material/colour_8, metadata_8, authoring_tool_8, ... ], 
+#                      ... 
+#                    ]
+#        "revision_A": from_id,
+#        "revision_B": to_id,
+#        "timestamp": <time_t>,
+#        "signature": <base64 AES string>,
+#        "sender": <string> // E.g. BHoM, 3D Repo, Speckle, etc.
+#     }
+# }
