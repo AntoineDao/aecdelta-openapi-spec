@@ -1,0 +1,34 @@
+{{>partial_header}}
+package {{packageName}}
+
+{{#operations}}
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	// WARNING!
+	// Change this to a fully-qualified import path
+	// once you place this file into your project.
+	// For example,
+	//
+	//    store "github.com/myname/myrepo/pkg/store"
+	//
+	store "github.com/antoinedao/aecdelta-go-server/pkg/store"
+
+){{#operation}}
+
+// {{nickname}} - {{{summary}}}
+func {{nickname}}(c *gin.Context) {
+	// Run Auth checks here
+
+	// Run data store operation
+	// `resource` must be of type map[string]interface{}
+	resource, err := store.{{nickname}}(c)
+
+	if err != nil {
+		c.AbortWithStatusJSON(err.StatusCode(), err)
+	}
+
+	c.JSON(http.StatusOK, resource)
+}{{/operation}}{{/operations}}
