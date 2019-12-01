@@ -148,10 +148,7 @@ paths:
           content:
             'application/json':
               schema:
-                title: Streams
-                type: array
-                items:
-                  $ref: '#/components/schemas/Streams'
+                $ref: '#/components/schemas/Streams'
         404:
           $ref: './responses/404.yaml'
 
@@ -502,7 +499,7 @@ paths:
           content:
             'application/json':
               schema:
-                title: Users
+                title: Team
                 type: array
                 items:
                   $ref: '#/components/schemas/Team'
