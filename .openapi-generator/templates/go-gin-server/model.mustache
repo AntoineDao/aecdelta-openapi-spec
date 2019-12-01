@@ -1,7 +1,6 @@
 {{>partial_header}}
-//package {{packageName}}
-// Move all model files into the pkg/model folder 
-package model
+package {{packageName}}
+
 {{#models}}{{#imports}}
 {{#-first}}import (
 {{/-first}}	"{{import}}"{{#-last}}

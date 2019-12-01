@@ -3,8 +3,6 @@ package {{packageName}}
 
 {{#operations}}
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 
 	// WARNING!
@@ -15,20 +13,49 @@ import (
 	//    store "github.com/myname/myrepo/pkg/store"
 	//
 	store "github.com/antoinedao/aecdelta-go-server/pkg/store"
-
 ){{#operation}}
 
-// {{nickname}} - {{{summary}}}
+// {{nickname}} - {{notes}}
 func {{nickname}}(c *gin.Context) {
-	// Run Auth checks here
+	{{#allParams}}
+	{{#isPathParam}}
+	// Get {{paramName}} path parameter
+	{{paramName}} := c.Param("{{paramName}}")
 
-	// Run data store operation
-	// `resource` must be of type map[string]interface{}
-	resource, err := store.{{nickname}}(c)
+	{{/isPathParam}}
+	{{#isQueryParam}}
+	// Get {{paramName}} query parameter
+	{{paramName}} := c.DefaultQuery("{{paramName}}", "")
+
+	{{/isQueryParam}}
+	{{#isBodyParam}}
+	// Get {{paramName}} payload
+	var {{paramName}} {{dataType}}
+	c.BindJSON(&{{paramName}})
+
+	{{/isBodyParam}}
+	{{/allParams}}
+	{{#returnSimpleType}}
+	// Initialise response object
+	response := {{returnType}}{}
+	{{/returnSimpleType}}
+	{{^returnSimpleType}}
+	{{#isListContainer}}
+	// Initialise response object
+	response := {{returnType}}{}
+	{{/isListContainer}}
+	{{^isListContainer}}
+	// Set default response
+	response := "{{responses.0.message}}"
+	{{/isListContainer}}
+	{{/returnSimpleType}}
+
+	// Execute operation from the store package
+	err := store.{{nickname}}(c{{#returnSimpleType}}, &response{{/returnSimpleType}}{{#isListContainer}}, &response{{/isListContainer}}{{#allParams}}, {{paramName}}{{/allParams}})
 
 	if err != nil {
 		c.AbortWithStatusJSON(err.StatusCode(), err)
 	}
 
-	c.JSON(http.StatusOK, resource)
+	c.JSON({{responses.0.code}}, response)
 }{{/operation}}{{/operations}}
